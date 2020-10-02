@@ -1,0 +1,66 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:th="http://www.thymeleac.org"
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+layout:decorator="layoutPadrao">
+
+<section layout:fragment="conteudo">
+
+<div id="page-wrapper">
+   <div class="row top-header">
+       <div class="col-lg-12">
+           <h2 class="page-header">Suas Consultas</h2>
+       </div>
+   </div>
+   
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+        <li class="breadcrumb-item active">Consulta</li>
+        
+    </ol>
+    
+    <div class="alert alert-success" th:if="${not #strings.isEmpty(mensagem)}">
+        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
+        <span th:text="${mensagem}"></span>
+       </div>
+       
+       <div class="alert alert-success" th:if="${not #strings.isEmpty(removido)}">
+        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
+        <span th:text="${removido}"></span>
+       </div>
+    
+    <div class="conteiner">
+        
+      
+        
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Médico</th>
+                    <th>Paciente</th>
+	                 <th>Data de agendamento</th>
+                    <th>hora do agendamento</th>
+                </tr>
+            </thead>
+            <tbody >
+                  <tr th:each="c: ${consultas}">  
+                    <td th:text="${c.medico.pessoa.nome}"></td>
+                     <td th:text="${c.agendamento.paciente.pessoa.nome}"></td>
+                     <td th:text="${c.agendamento.dataAgendamento}"></td>
+                    <td th:text="${c.agendamento.horaAgendamento}"></td>
+                   <!--  <td>
+                        <a th:href="@{consulta/edit/{id}(id=${c.id})}" type="button" class="btn btn-outline btn-primary">Reagendar</a>
+                        <a th:href="@{consulta/delete/{id}(id=${c.id})}" type="button" class="btn btn-outline btn-danger">Excluir</a>
+						<a th:href="@{consulta/cancelarAgendamento/{id}(id=${c.agendamento.id})}" type="button" class="btn btn-outline btn-danger">Canc. Agendamento</a>
+                        
+                    </td> -->
+                  </tr>
+            </tbody>
+        </table>
+        <a th:href="@{/consulta/novo}" type="button" class="btn btn-outline btn-primary">Novo consulta</a>
+    </div>
+    
+        
+</div>
+</section>
+</html>

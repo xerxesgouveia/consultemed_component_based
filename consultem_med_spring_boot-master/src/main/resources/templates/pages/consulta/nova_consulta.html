@@ -1,0 +1,77 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layoutPadrao">
+
+<section layout:fragment="conteudo">
+
+    <div id="page-wrapper">
+        <div class="row top-header">
+            <div class="col-lg-12">
+                <h4 class="page-header">Nova consulta</h4>
+            </div>
+        </div>
+
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+            <li class="breadcrumb-item active">Funcionarios</li>
+        </ol>
+        <!-- FORMULARIO DE CADASTRO DE CONSULTA-->
+
+        <div class="alert alert-success" th:if="${not #strings.isEmpty(mensagem)}">
+            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
+            <span th:text="${mensagem}"></span>
+        </div>
+        <div class="alert alert-danger" th:if="${not #strings.isEmpty(mensagemErro)}">
+            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
+            <span th:text="${mensagemErro}"></span>
+        </div>
+
+        <form th:object="${consulta}" th:action="@{/consulta/save}" method="POST" role="form">
+
+            <input id="id" type="hidden" class="form-control" th:field="*{id}" />
+            <div class="form-group">
+                <div class="alert alert-danger" th:if="${#fields.hasAnyErrors()}">
+	            <div th:each="detailedError : ${#fields.detailedErrors()}">
+		                <span th:text="${detailedError.message}"></span>
+		            </div>
+		        </div>
+		    </div> 
+		
+		<div class="form-group" >
+			<label>Descrição</label> 
+			<input id="descricao" class="form-control" type="text" name="descricao"  th:field="*{descricao}" required="true"/>
+        </div>
+        
+        <div class="form-group" th:classappend="${#fields.hasErrors('agendamento.dataAgendamento')}? 'has-error'">
+            <label>Data de agendamento</label> 
+            <input id="dataAgendamento" class="form-control" type="date" name="dataAgendamento"  th:field="*{agendamento.dataAgendamento}"/>
+        </div>
+        
+        <div class="form-group" th:classappend="${#fields.hasErrors('agendamento.horaAgendamento')}? 'has-error'">
+            <label>Hora do agendamento</label> 
+            <input id="horaAgendamento" class="form-control" maxlength="8" type="time" pattern="[0-9]{2}:[0-9]{2} [0-9]{2}$" name="horaAgendamento"  th:field="*{agendamento.horaAgendamento}"/>
+        </div>
+        <div class="form-group" th:classappend="${#fields.hasErrors('medico')}? 'has-error'">
+            <label for="medico">Médicos disponíveis</label> 
+                <select name="medico" th:field="*{medico}" class="form-control" >
+                    <option th:each="m: ${medicos}" 
+                            th:value="${m.id}" th:text="${m.pessoa.nome}"></option>                                                             
+            </select>
+        </div>  
+        
+         <div class="form-group" th:classappend="${#fields.hasErrors('agendamento.paciente')}? 'has-error'">
+            <label for="paciente">Pacientes </label> 
+                <select name="paciente" th:field="*{agendamento.paciente}" class="form-control" >
+                    <option th:each="p: ${pacientes}" 
+                            th:value="${p.id}" th:text="${p.pessoa.nome}"></option>                                                             
+            </select>
+        </div>      
+		
+		
+		<div class="form-group">
+			<button type="submit" class="btn btn-outline btn-primary">Salvar</button>
+			<a th:href="@{/consulta}" type="button" class="btn btn-outline btn-success">Consultas</a>
+		</div>
+		</form>
+	</div>
+</section>
+</html>

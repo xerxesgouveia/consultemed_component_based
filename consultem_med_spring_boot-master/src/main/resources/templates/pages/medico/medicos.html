@@ -1,0 +1,85 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:th="http://www.thymeleaf.org"
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+layout:decorator="layoutPadrao">
+
+<section layout:fragment="conteudo">
+
+<div id="page-wrapper">
+   <div class="row top-header">
+       <div class="col-lg-12">
+           <h2 class="page-header">Medicos</h2>
+       </div>
+   </div>
+   
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+        <li class="breadcrumb-item active">Medico</li>
+        
+    </ol>
+    
+    <div class="alert alert-success" th:if="${not #strings.isEmpty(mensagem)}">
+        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
+        <span th:text="${mensagem}"></span>
+       </div>
+       
+       <div class="alert alert-success" th:if="${not #strings.isEmpty(removido)}">
+        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
+        <span th:text="${removido}"></span>
+       </div>
+    
+    <div class="conteiner">
+        
+        <form method="GET" class="form-horizontal" action="/medico" th:object="${filtro}">
+               <div class="form-group">
+                   <div class="col-sm-4">
+                       <div class="input-group">
+                           <input class="form-control" placeholder="Qual contato você está procurando?"
+                               autofocus="autofocus" th:field="*{nome}"></input>
+                           <span class="input-group-btn">
+                               <button type="submit" class="btn btn-default">
+                                   <i class="glyphicon glyphicon-search"></i>
+                               </button>
+                           </span>
+                       </div>
+                   </div>
+               </div>
+           </form>			
+        
+        
+        <br/>
+        
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Crm</th>
+                    <th>telefone</th>
+                    <th>email</th>
+                    <th class="th-acoes">Ações</th>
+                </tr>
+            </thead>
+            <tbody >
+                  <tr th:each="m: ${medicos}">  
+                    <td th:text="${m.pessoa.nome}"></td>
+                    <td th:text="${m.crm}"></td>
+                    <td th:text="${m.pessoa.telefone}"></td>
+					<td th:text="${m.pessoa.usuario.login}"></td>
+                    
+                    <td>
+                        <a th:href="@{medico/edit/{id}(id=${m.id})}" type="button" class="btn btn-outline btn-primary">Editar</a>
+                        <a th:href="@{medico/delete/{id}(id=${m.id})}" type="button" class="btn btn-outline btn-danger">Excluir</a>
+                        <a th:href="@{medico/filtro/{id}(id=${m.id})}" type="button" class="btn btn-outline btn-primary">Filtrar Consultas</a>
+                        
+                    </td>
+                  </tr>
+            </tbody>
+        </table>
+        <a th:href="@{/medico/novo}" type="button" class="btn btn-outline btn-primary">Novo Medico</a>
+    </div>
+    
+        
+</div>
+</section>
+</html>

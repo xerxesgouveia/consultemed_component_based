@@ -4,6 +4,7 @@
 package br.com.consultemed.models;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.EqualsAndHashCode;
@@ -26,7 +28,6 @@ import lombok.Setter;
 
 @NamedQueries({ @NamedQuery(name = "Medido.findAll", query = "SELECT m FROM Medico m")})
 @NoArgsConstructor
-@EqualsAndHashCode
 @Entity
 @Table(name = "TB_MEDICOS")
 public class Medico implements Serializable{
@@ -57,5 +58,36 @@ public class Medico implements Serializable{
 	@Setter
 	@Column(name = "TELEFONE")
 	private String telefone;
+	
+	@Getter
+	@Setter
+	@OneToMany(mappedBy="medico")
+	private List<Consulta> consultas;
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Medico other = (Medico) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+	
 	
 }
